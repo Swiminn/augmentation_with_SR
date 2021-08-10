@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7d071b46-6455-40b9-b0cf-46ebd1164001" name="Default Changelist" comment="" />
+    <list default="true" id="7d071b46-6455-40b9-b0cf-46ebd1164001" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/models/Residual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/checkpoints/resnet18.pth" beforeDir="false" afterPath="$PROJECT_DIR$/checkpoints/resnet18.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Resnet_32.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Resnet_32.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,9 +21,15 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1wLiBMBUWRbKyo56WWuZ5ElqcI6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -31,7 +43,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.tmp2">
+  <component name="RunManager" selected="Python.train">
     <configuration name="dataloader" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="augmentation_with_SR" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -139,10 +151,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.train" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.tmp2" />
         <item itemvalue="Python.tmp" />
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python.train" />
         <item itemvalue="Python.dataloader" />
       </list>
     </recent_temporary>
@@ -159,5 +171,18 @@
       <updated>1628244133075</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

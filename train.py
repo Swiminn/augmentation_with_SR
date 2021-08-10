@@ -3,18 +3,32 @@ import torchvision
 import torch.optim as optim
 import torch.nn as nn
 from dataloader import trainloader, testloader
-from models import Resnet_32
+from models import Resnet_32, Residual
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using {} device'.format(device))
 
-resnet18 = Resnet_32.resnet18().to(device)
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(resnet18.parameters(), lr=0.001, momentum=0.9)
+resnet18 = Residual.ResNet18().to(device)
+print(resnet18)
 
-for epoch in range(2):  # loop over the dataset multiple times
+criterion = nn.CrossEntropyLoss()
+learning_rate = 0.001
+optimizer = optim.Adam(resnet18.parameters(), lr=learning_rate)
+
+
+def adjust_learning_rate(optimizer, lr):
+    lr = lr / 10
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
+
+
+for epoch in range(100):  # loop over the dataset multiple times
 
     running_loss = 0.0
+    if epoch > 0 and (epoch + 1) % 35 == 0 :
+        adjust_learning_rate(optimizer, learning_rate)
+        learning_rate = learning_rate / 10
+
     for i, data in enumerate(trainloader, 0):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data

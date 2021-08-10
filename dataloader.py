@@ -53,7 +53,7 @@ trainloader = torch.utils.data.DataLoader(
         classes,
         transform=transform
     ),
-    batch_size=4,
+    batch_size=128,
     shuffle=True
 )
 
@@ -63,7 +63,7 @@ testloader = torch.utils.data.DataLoader(
         classes,
         transform=transform
     ),
-    batch_size=4,
+    batch_size=128,
     shuffle=False
 )
 

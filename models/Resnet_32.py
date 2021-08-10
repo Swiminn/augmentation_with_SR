@@ -7,7 +7,7 @@ from torchvision.models.resnet import ResNet, Bottleneck, BasicBlock
 class Resnet_32(ResNet):
 
     def __init__(self, block, layers, num_classes=10, zero_init_residual=False,
-                 groups=1, width_per_group=32, replace_stride_with_dilation=None,
+                 groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None):
         super(Resnet_32, self).__init__()
         if norm_layer is None:
@@ -25,7 +25,7 @@ class Resnet_32(ResNet):
                              "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=3, stride=2, padding=1,
                                bias=False)
         self.bn1 = norm_layer(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
@@ -56,6 +56,23 @@ class Resnet_32(ResNet):
                     nn.init.constant_(m.bn3.weight, 0)
                 elif isinstance(m, BasicBlock):
                     nn.init.constant_(m.bn2.weight, 0)
+    def _forward_impl(self, x):
+        # See note [TorchScript super()]
+        x = self.conv1(x) # 32
+        x = self.bn1(x)
+        x = self.relu(x)
+        # x = self.maxpool(x)
+
+        x = self.layer1(x) #32
+        x = self.layer2(x) #16
+        x = self.layer3(x)
+        x = self.layer4(x)
+
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.fc(x)
+
+        return x
 
 
 def _resnet(arch, block, layers, pretrained, progress, **kwargs):
@@ -71,5 +88,7 @@ def resnet18(pretrained=False, progress=True, **kwargs):
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, progress,
-                   **kwargs)
+    # return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, progress,
+    #                **kwargs)
+    model = Resnet_32(BasicBlock, [2,2,2,2], num_classes=10, width_per_group=64)
+    return model
