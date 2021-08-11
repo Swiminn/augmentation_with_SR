@@ -22,9 +22,10 @@ def adjust_learning_rate(optimizer, lr):
         param_group['lr'] = lr
 
 
-for epoch in range(100):  # loop over the dataset multiple times
+for epoch in range(2):  # loop over the dataset multiple times
 
     running_loss = 0.0
+    running_corrects = 0
     if epoch > 0 and (epoch + 1) % 35 == 0 :
         adjust_learning_rate(optimizer, learning_rate)
         learning_rate = learning_rate / 10
@@ -42,11 +43,15 @@ for epoch in range(100):  # loop over the dataset multiple times
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
-
+        _, predictions = torch.max(outputs, 1)
         # print statistics
         running_loss += loss.item()
-    print('epoch : [%d] loss: %.4f' %(epoch + 1, running_loss / len(trainloader)))
-    running_loss = 0.0
+        running_corrects += torch.sum(predictions == labels).item()
+
+    epoch_loss = running_loss / (len(trainloader))
+    epoch_acc = running_corrects / (32 * len(trainloader))
+    print('epoch : [%d] loss: %.4f' %(epoch + 1, epoch_loss))
+    print('epoch_correct : %.4f' %(epoch_acc))
 torch.save(resnet18, './checkpoints/resnet18.pth')
 
 print('Finished Training')

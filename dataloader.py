@@ -15,6 +15,7 @@ transform = transforms.Compose(
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
+batch_size = 32
 
 class MyCifarSet(Dataset):
     # data_path_list - 이미지 path 전체 리스트
@@ -53,7 +54,7 @@ trainloader = torch.utils.data.DataLoader(
         classes,
         transform=transform
     ),
-    batch_size=128,
+    batch_size=batch_size,
     shuffle=True
 )
 
@@ -63,7 +64,7 @@ testloader = torch.utils.data.DataLoader(
         classes,
         transform=transform
     ),
-    batch_size=128,
+    batch_size=batch_size,
     shuffle=False
 )
 
