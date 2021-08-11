@@ -45,10 +45,8 @@ for epoch in range(100):  # loop over the dataset multiple times
 
         # print statistics
         running_loss += loss.item()
-        if i % 200 == 199:    # print every 200 mini-batches
-            print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 200))
-            running_loss = 0.0
+    print('epoch : [%d] loss: %.4f' %(epoch + 1, running_loss / len(trainloader)))
+    running_loss = 0.0
 torch.save(resnet18, './checkpoints/resnet18.pth')
 
 print('Finished Training')
