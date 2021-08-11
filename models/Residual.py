@@ -81,6 +81,7 @@ class ResNet18(nn.Module):
         x = self.blk6(x)
         x = self.blk7(x)
         x = self.blk8(x)
+        x = self.blk9(x)
 
         # [b, 64, h/4, w/4] => [b, 64, 1, 1]
         x = F.adaptive_avg_pool2d(x, [1, 1])
