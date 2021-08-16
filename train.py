@@ -12,7 +12,7 @@ resnet18 = Residual.ResNet18().to(device)
 print(resnet18)
 
 criterion = nn.CrossEntropyLoss()
-learning_rate = 0.0001
+learning_rate = 0.1
 optimizer = optim.Adam(resnet18.parameters(), lr=learning_rate)
 
 
@@ -26,7 +26,7 @@ for epoch in range(5):  # loop over the dataset multiple times
 
     running_loss = 0.0
     running_corrects = 0
-    if epoch > 0 and ((epoch + 1) % 250 == 0 or (epoch + 1) % 375 == 0):
+    if epoch > 0 and ((epoch + 1) % 80 == 0 or (epoch + 1) % 120 == 0):
         adjust_learning_rate(optimizer, learning_rate)
         learning_rate = learning_rate / 10
 
