@@ -15,7 +15,7 @@ transform = transforms.Compose(
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-batch_size = 32
+batch_size = 128
 
 class MyCifarSet(Dataset):
     # data_path_list - 이미지 path 전체 리스트

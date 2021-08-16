@@ -13,9 +13,9 @@ class ResBlk(nn.Module):
         super(ResBlk, self).__init__()
 
         self.conv1 = nn.Conv2d(ch_in, ch_out, kernel_size=3, stride=stride, padding=1)
-        self.bn1 = nn.BatchNorm2d(ch_out)
+        # self.bn1 = nn.BatchNorm2d(ch_out)
         self.conv2 = nn.Conv2d(ch_out, ch_out, kernel_size=3, stride=1, padding=1)
-        self.bn2 = nn.BatchNorm2d(ch_out)
+        # self.bn2 = nn.BatchNorm2d(ch_out)
 
 
         # [b, ch_in, h, w] => [b, ch_out, h, w]
@@ -30,7 +30,7 @@ class ResBlk(nn.Module):
         :return:
         '''
         out = F.relu(self.conv1(x))
-        out = self.conv2(out)
+        out = F.relu(self.conv2(out))
         # short cut
         # extra module: [b, ch_in, h, w] => [b, ch_out, h, w]
         # element-wise add:
@@ -49,7 +49,7 @@ class ResNet18(nn.Module):
 
         self.conv1 = nn.Sequential(
             nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(16)
+            # nn.BatchNorm2d(16)
         )
 
         # follow 4 blocks

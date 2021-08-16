@@ -2,7 +2,7 @@ import torch
 import torchvision
 import torch.optim as optim
 import torch.nn as nn
-from dataloader import trainloader, testloader
+from dataloader import trainloader, testloader, batch_size
 from models import Resnet_32, Residual2
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -50,7 +50,7 @@ for epoch in range(2):  # loop over the dataset multiple times
         running_corrects += torch.sum(predictions == labels).item()
 
     epoch_loss = running_loss / (len(trainloader))
-    epoch_acc = running_corrects / (32 * len(trainloader))
+    epoch_acc = running_corrects / (batch_size * len(trainloader))
 
     with torch.no_grad():
         running_test_loss = 0.0
@@ -65,7 +65,7 @@ for epoch in range(2):  # loop over the dataset multiple times
             running_test_loss += test_loss.item()
             running_test_corrects += torch.sum(test_predictions == test_labels).item()
         running_test_loss = running_test_loss / (len(testloader))
-        running_test_corrects = running_test_corrects / (32 * len(testloader))
+        running_test_corrects = running_test_corrects / (batch_size * len(testloader))
 
     print('epoch : [%d] train_loss: %.4f' %(epoch + 1, epoch_loss), end=" ")
     print("test_loss : %.4f" % (running_test_loss), end=" ")
