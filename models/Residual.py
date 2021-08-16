@@ -21,7 +21,7 @@ class ResBlk(nn.Module):
         # [b, ch_in, h, w] => [b, ch_out, h, w]
         self.extra = nn.Sequential(
             nn.Conv2d(ch_in, ch_out, kernel_size=1, stride=stride),
-            nn.BatchNorm2d(ch_out)
+            # nn.BatchNorm2d(ch_out)
         )
 
     def forward(self, x):
@@ -29,8 +29,8 @@ class ResBlk(nn.Module):
         :param x: [b, ch, h, w]
         :return:
         '''
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.bn2(self.conv2(out))
+        out = F.relu(self.conv1(x))
+        out = self.conv2(out)
         # short cut
         # extra module: [b, ch_in, h, w] => [b, ch_out, h, w]
         # element-wise add:

@@ -51,8 +51,27 @@ for epoch in range(2):  # loop over the dataset multiple times
 
     epoch_loss = running_loss / (len(trainloader))
     epoch_acc = running_corrects / (32 * len(trainloader))
-    print('epoch : [%d] loss: %.4f' %(epoch + 1, epoch_loss))
-    print('epoch_correct : ', epoch_acc)
+
+    with torch.no_grad():
+        running_test_loss = 0.0
+        running_test_corrects = 0
+        for i, test_data in enumerate(testloader, 0):
+            test_images, test_labels = test_data
+            test_images, test_labels = test_images.to(device), test_labels.to(device)
+            test_outputs = resnet18(test_images)
+            test_outputs = test_outputs.view(test_outputs.size(0), -1)
+            _, test_predictions = torch.max(test_outputs, 1)
+            test_loss = criterion(test_outputs, test_labels)
+            running_test_loss += test_loss.item()
+            running_test_corrects += torch.sum(test_predictions == test_labels).item()
+        running_test_loss = running_test_loss / (len(testloader))
+        running_test_corrects = running_test_corrects / (32 * len(testloader))
+
+    print('epoch : [%d] train_loss: %.4f' %(epoch + 1, epoch_loss), end=" ")
+    print("test_loss : %.4f" % (running_test_loss), end=" ")
+    print('train_correct : %.4f' %(epoch_acc), end=" ")
+    print("test_correct : %.4f" %(running_test_corrects))
+
 torch.save(resnet18, './checkpoints/resnet18.pth')
 
 print('Finished Training')
