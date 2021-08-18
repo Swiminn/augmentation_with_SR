@@ -13,7 +13,9 @@ classes = ('plane', 'car', 'bird', 'cat',
 correct_pred = {classname: 0 for classname in classes}
 total_pred = {classname: 0 for classname in classes}
 
+
 # 변화도는 여전히 필요하지 않습니다
+resnet18.eval()
 with torch.no_grad():
     for data in testloader:
         images, labels = data

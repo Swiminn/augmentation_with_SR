@@ -8,7 +8,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-transform = transforms.Compose(
+transform_train = transforms.Compose([
+    transforms.ToPILImage(),
+     transforms.RandomCrop(32, padding=4),
+     transforms.ToTensor(),
+     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+transform_test = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
@@ -52,7 +58,7 @@ trainloader = torch.utils.data.DataLoader(
     MyCifarSet(
         DATA_PATH_TRAINING_LIST,
         classes,
-        transform=transform
+        transform=transform_train
     ),
     batch_size=batch_size,
     shuffle=True
@@ -62,7 +68,7 @@ testloader = torch.utils.data.DataLoader(
     MyCifarSet(
         DATA_PATH_TESTING_LIST,
         classes,
-        transform=transform
+        transform=transform_test
     ),
     batch_size=batch_size,
     shuffle=False

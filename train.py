@@ -13,7 +13,7 @@ print(resnet18)
 
 criterion = nn.CrossEntropyLoss()
 learning_rate = 0.1
-optimizer = optim.Adam(resnet18.parameters(), lr=learning_rate)
+optimizer = optim.SGD(resnet18.parameters(), lr=learning_rate, momentum=0.9, weight_decay=0.0001)
 
 
 def adjust_learning_rate(optimizer, lr):
@@ -22,10 +22,11 @@ def adjust_learning_rate(optimizer, lr):
         param_group['lr'] = lr
 
 
-for epoch in range(5):  # loop over the dataset multiple times
+for epoch in range(160):  # loop over the dataset multiple times
 
     running_loss = 0.0
     running_corrects = 0
+    resnet18.train()
     if epoch > 0 and ((epoch + 1) % 80 == 0 or (epoch + 1) % 120 == 0):
         adjust_learning_rate(optimizer, learning_rate)
         learning_rate = learning_rate / 10
@@ -51,6 +52,7 @@ for epoch in range(5):  # loop over the dataset multiple times
     epoch_loss = running_loss / (len(trainloader))
     epoch_acc = running_corrects / (batch_size * len(trainloader))
 
+    resnet18.eval()
     with torch.no_grad():
         running_test_loss = 0.0
         running_test_corrects = 0
@@ -65,9 +67,9 @@ for epoch in range(5):  # loop over the dataset multiple times
         running_test_loss = running_test_loss / (len(testloader))
         running_test_corrects = running_test_corrects / (batch_size * len(testloader))
 
-    print('epoch : [%d] train_loss: %.4f' % (epoch + 1, epoch_loss), end=" ")
-    print("test_loss : %.4f" % (running_test_loss), end=" ")
-    print('train_correct : %.4f' % (epoch_acc), end=" ")
+    print('epoch : [%d] train_loss: %.4f' % (epoch + 1, epoch_loss), end=", ")
+    print("test_loss : %.4f" % (running_test_loss), end=", ")
+    print('train_correct : %.4f' % (epoch_acc), end=", ")
     print("test_correct : %.4f" % (running_test_corrects))
 
 torch.save(resnet18, './checkpoints/resnet18.pth')

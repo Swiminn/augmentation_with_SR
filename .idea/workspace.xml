@@ -3,8 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="7d071b46-6455-40b9-b0cf-46ebd1164001" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Residual.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Residual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/checkpoints/resnet18.pth" beforeDir="false" afterPath="$PROJECT_DIR$/checkpoints/resnet18.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/test2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train2.py" beforeDir="false" afterPath="$PROJECT_DIR$/train2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +45,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.train">
+  <component name="RunManager" selected="Python.train2">
     <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="augmentation_with_SR" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -149,10 +153,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.train" />
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python.test2" />
         <item itemvalue="Python.train2" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.train" />
+        <item itemvalue="Python.test2" />
         <item itemvalue="Python.tmp2" />
       </list>
     </recent_temporary>
