@@ -16,7 +16,7 @@ print(resnet18)
 
 criterion = nn.CrossEntropyLoss()
 learning_rate = 0.1
-optimizer = optim.SGD(resnet18.parameters(), lr=learning_rate, weight_decay=5e-4)
+optimizer = optim.SGD(resnet18.parameters(), lr=learning_rate, momentum=0.9, weight_decay=5e-4)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
 def adjust_learning_rate(optimizer, lr):

@@ -6,17 +6,22 @@ import torchvision.transforms as transforms
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
+from transform_image import Upscailing
 
 
 transform_train = transforms.Compose([
     transforms.ToPILImage(),
-     transforms.RandomCrop(32, padding=4),
-     transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    # Upscailing(48, 48, method="bicubic"),
+    # transforms.RandomHorizontalFlip(),
+    #  transforms.RandomCrop(32, padding=4),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-transform_test = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+transform_test = transforms.Compose([
+    # transforms.ToPILImage(),
+    # Upscailing(48, 48, method="bicubic"),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
@@ -51,8 +56,8 @@ class MyCifarSet(Dataset):
         return image, self.classes.index(self.label[idx])
 
 
-DATA_PATH_TRAINING_LIST = glob('./CIFAR-10-images/train/*/*.jpg')
-DATA_PATH_TESTING_LIST = glob('./CIFAR-10-images/test/*/*.jpg')
+DATA_PATH_TRAINING_LIST = glob('./datasets/CIFAR10/train/*/*.jpg')
+DATA_PATH_TESTING_LIST = glob('./datasets/CIFAR10/test/*/*.jpg')
 
 trainloader = torch.utils.data.DataLoader(
     MyCifarSet(
