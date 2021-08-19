@@ -17,11 +17,11 @@ print(resnet20)
 criterion = nn.CrossEntropyLoss()
 learning_rate = 0.1
 optimizer = optim.SGD(resnet20.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
-# scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
-scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100, 150])
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+# scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100, 150])
 
 
-for epoch in range(10):  # loop over the dataset multiple times
+for epoch in range(200):  # loop over the dataset multiple times
 
     running_loss = 0.0
     running_corrects = 0

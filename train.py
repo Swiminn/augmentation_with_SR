@@ -14,22 +14,14 @@ print(resnet18)
 criterion = nn.CrossEntropyLoss()
 learning_rate = 0.1
 optimizer = optim.SGD(resnet18.parameters(), lr=learning_rate, momentum=0.9, weight_decay=0.0001)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
 
-def adjust_learning_rate(optimizer, lr):
-    lr = lr / 10
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
-
-
-for epoch in range(160):  # loop over the dataset multiple times
+for epoch in range(200):  # loop over the dataset multiple times
 
     running_loss = 0.0
     running_corrects = 0
     resnet18.train()
-    if epoch > 0 and ((epoch + 1) % 80 == 0 or (epoch + 1) % 120 == 0):
-        adjust_learning_rate(optimizer, learning_rate)
-        learning_rate = learning_rate / 10
 
     for i, data in enumerate(trainloader, 0):
         # get the inputs; data is a list of [inputs, labels]
@@ -48,6 +40,7 @@ for epoch in range(160):  # loop over the dataset multiple times
         # print statistics
         running_loss += loss.item()
         running_corrects += torch.sum(predictions == labels).item()
+    scheduler.step()
 
     epoch_loss = running_loss / (len(trainloader))
     epoch_acc = running_corrects / (batch_size * len(trainloader))
