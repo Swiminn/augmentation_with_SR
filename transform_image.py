@@ -55,7 +55,7 @@ class Upscailing(torch.nn.Module):
             print("input method is wrong")
 
 if __name__ == "__main__":
-    image1 = liif('2.png',512,512)
+    image1 = liif('0073.jpg',512,512)
     image1.save("test_liif.png")
-    image2 = bicubic('2.png', 512,512)
-    image2.save("test_bicubic.png")
+    image2 = bicubic('0073.jpg', 512,512)
+    image2.save("test_bicubic.jpg")
