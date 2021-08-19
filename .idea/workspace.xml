@@ -3,12 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7d071b46-6455-40b9-b0cf-46ebd1164001" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/resnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/test2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_bicubic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_liif.png" beforeDir="false" afterPath="$PROJECT_DIR$/test_liif.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train2.py" beforeDir="false" afterPath="$PROJECT_DIR$/train2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transform_image.py" beforeDir="false" afterPath="$PROJECT_DIR$/transform_image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/checkpoints/resnet20.pth" beforeDir="false" afterPath="$PROJECT_DIR$/checkpoints/resnet20.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataloader.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
