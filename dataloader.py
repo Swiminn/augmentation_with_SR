@@ -26,7 +26,7 @@ transform_test = transforms.Compose([
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-batch_size = 128
+batch_size = 32
 
 class MyCifarSet(Dataset):
     # data_path_list - 이미지 path 전체 리스트
@@ -56,8 +56,8 @@ class MyCifarSet(Dataset):
         return image, self.classes.index(self.label[idx])
 
 
-DATA_PATH_TRAINING_LIST = glob('./datasets/CIFAR10/train/*/*.jpg')
-DATA_PATH_TESTING_LIST = glob('./datasets/CIFAR10/test/*/*.jpg')
+DATA_PATH_TRAINING_LIST = glob('./datasets/CIFAR10_64_bicubic/train/*/*.jpg')
+DATA_PATH_TESTING_LIST = glob('./datasets/CIFAR10_64_bicubic/test/*/*.jpg')
 
 trainloader = torch.utils.data.DataLoader(
     MyCifarSet(

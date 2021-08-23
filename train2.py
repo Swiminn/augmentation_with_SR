@@ -5,12 +5,14 @@ import torch.nn as nn
 from dataloader import trainloader, testloader, batch_size
 from models import Resnet_32, Residual2
 from models.resnet import resnet20
+# from models.resnet_95 import ResNet18
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using {} device'.format(device))
 
 # resnet18 = Residual2.resnet18(10, 3).to(device)
-resnet20 = resnet20().to(device)
+# resnet20 = ResNet18().to(device)
+resnet20 = Resnet_32.resnet18().to(device)
 print(resnet20)
 
 

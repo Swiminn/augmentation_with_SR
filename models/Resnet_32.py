@@ -25,7 +25,7 @@ class Resnet_32(ResNet):
                              "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
         self.groups = groups
         self.base_width = width_per_group
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=3, stride=2, padding=1,
+        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = norm_layer(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
@@ -88,7 +88,6 @@ def resnet18(pretrained=False, progress=True, **kwargs):
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    # return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, progress,
-    #                **kwargs)
-    model = Resnet_32(BasicBlock, [2,2,2,2], num_classes=10, width_per_group=64)
-    return model
+    return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], pretrained, progress, **kwargs)
+    # model = Resnet_32(BasicBlock, [2,2,2,2], num_classes=10, width_per_group=64)
+    # return model
