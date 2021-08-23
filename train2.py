@@ -5,20 +5,20 @@ import torch.nn as nn
 from dataloader import trainloader, testloader, batch_size
 from models import Resnet_32, Residual2
 from models.resnet import resnet20
-# from models.resnet_95 import ResNet18
+from models.resnet_95 import ResNet18
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using {} device'.format(device))
 
 # resnet18 = Residual2.resnet18(10, 3).to(device)
-# resnet20 = ResNet18().to(device)
-resnet20 = Resnet_32.resnet18().to(device)
+resnet20 = ResNet18().to(device)
+# resnet20 = Resnet_32.resnet18().to(device)
 print(resnet20)
 
 
 criterion = nn.CrossEntropyLoss()
 learning_rate = 0.1
-optimizer = optim.SGD(resnet20.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-4)
+optimizer = optim.SGD(resnet20.parameters(), lr=learning_rate, momentum=0.9, weight_decay=5e-4)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 # scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100, 150])
 
@@ -74,6 +74,6 @@ for epoch in range(200):  # loop over the dataset multiple times
     print("test_correct : %.4f" % running_test_corrects)
 
 
-torch.save(resnet20, './checkpoints/resnet20.pth')
+torch.save(resnet20, './checkpoints/resnet18.pth')
 
 print('Finished Training')

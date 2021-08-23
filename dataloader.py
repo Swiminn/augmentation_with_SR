@@ -10,8 +10,7 @@ from transform_image import Upscailing
 
 
 transform_train = transforms.Compose([
-    transforms.ToPILImage(),
-    # Upscailing(48, 48, method="bicubic"),
+    # transforms.ToPILImage(),
     # transforms.RandomHorizontalFlip(),
     #  transforms.RandomCrop(32, padding=4),
     transforms.ToTensor(),
@@ -19,7 +18,6 @@ transform_train = transforms.Compose([
 
 transform_test = transforms.Compose([
     # transforms.ToPILImage(),
-    # Upscailing(48, 48, method="bicubic"),
     transforms.ToTensor(),
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 

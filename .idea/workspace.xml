@@ -4,8 +4,7 @@
     <list default="true" id="7d071b46-6455-40b9-b0cf-46ebd1164001" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Resnet_32.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Resnet_32.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/resnet_95%.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/resnet_95.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/resnet_95.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/resnet_95.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train2.py" beforeDir="false" afterPath="$PROJECT_DIR$/train2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
