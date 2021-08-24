@@ -4,7 +4,7 @@ import torch.optim as optim
 import torch.nn as nn
 from dataloader import trainloader, testloader, batch_size
 from models import Resnet_32, Residual2
-from models.resnet import resnet20
+from models.resnet_paper import resnet20
 from models.resnet_95 import ResNet18
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'

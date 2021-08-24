@@ -1,146 +1,124 @@
+'''Some helper functions for PyTorch, including:
+    - get_mean_and_std: calculate the mean and std value of dataset.
+    - msr_init: net parameter initialization.
+    - progress_bar: progress bar mimic xlua.progress.
+'''
 import os
+import sys
 import time
-import shutil
 import math
 
-import torch
-import numpy as np
-from torch.optim import SGD, Adam
-from tensorboardX import SummaryWriter
+import torch.nn as nn
+import torch.nn.init as init
 
 
-class Averager():
+def get_mean_and_std(dataset):
+    '''Compute the mean and std value of dataset.'''
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=True, num_workers=2)
+    mean = torch.zeros(3)
+    std = torch.zeros(3)
+    print('==> Computing mean and std..')
+    for inputs, targets in dataloader:
+        for i in range(3):
+            mean[i] += inputs[:,i,:,:].mean()
+            std[i] += inputs[:,i,:,:].std()
+    mean.div_(len(dataset))
+    std.div_(len(dataset))
+    return mean, std
 
-    def __init__(self):
-        self.n = 0.0
-        self.v = 0.0
-
-    def add(self, v, n=1.0):
-        self.v = (self.v * self.n + v * n) / (self.n + n)
-        self.n += n
-
-    def item(self):
-        return self.v
-
-
-class Timer():
-
-    def __init__(self):
-        self.v = time.time()
-
-    def s(self):
-        self.v = time.time()
-
-    def t(self):
-        return time.time() - self.v
+def init_params(net):
+    '''Init layer parameters.'''
+    for m in net.modules():
+        if isinstance(m, nn.Conv2d):
+            init.kaiming_normal(m.weight, mode='fan_out')
+            if m.bias:
+                init.constant(m.bias, 0)
+        elif isinstance(m, nn.BatchNorm2d):
+            init.constant(m.weight, 1)
+            init.constant(m.bias, 0)
+        elif isinstance(m, nn.Linear):
+            init.normal(m.weight, std=1e-3)
+            if m.bias:
+                init.constant(m.bias, 0)
 
 
-def time_text(t):
-    if t >= 3600:
-        return '{:.1f}h'.format(t / 3600)
-    elif t >= 60:
-        return '{:.1f}m'.format(t / 60)
+_, term_width = os.popen('stty size', 'r').read().split()
+term_width = int(term_width)
+
+TOTAL_BAR_LENGTH = 65.
+last_time = time.time()
+begin_time = last_time
+def progress_bar(current, total, msg=None):
+    global last_time, begin_time
+    if current == 0:
+        begin_time = time.time()  # Reset for new bar.
+
+    cur_len = int(TOTAL_BAR_LENGTH*current/total)
+    rest_len = int(TOTAL_BAR_LENGTH - cur_len) - 1
+
+    sys.stdout.write(' [')
+    for i in range(cur_len):
+        sys.stdout.write('=')
+    sys.stdout.write('>')
+    for i in range(rest_len):
+        sys.stdout.write('.')
+    sys.stdout.write(']')
+
+    cur_time = time.time()
+    step_time = cur_time - last_time
+    last_time = cur_time
+    tot_time = cur_time - begin_time
+
+    L = []
+    L.append('  Step: %s' % format_time(step_time))
+    L.append(' | Tot: %s' % format_time(tot_time))
+    if msg:
+        L.append(' | ' + msg)
+
+    msg = ''.join(L)
+    sys.stdout.write(msg)
+    for i in range(term_width-int(TOTAL_BAR_LENGTH)-len(msg)-3):
+        sys.stdout.write(' ')
+
+    # Go back to the center of the bar.
+    for i in range(term_width-int(TOTAL_BAR_LENGTH/2)+2):
+        sys.stdout.write('\b')
+    sys.stdout.write(' %d/%d ' % (current+1, total))
+
+    if current < total-1:
+        sys.stdout.write('\r')
     else:
-        return '{:.1f}s'.format(t)
+        sys.stdout.write('\n')
+    sys.stdout.flush()
 
+def format_time(seconds):
+    days = int(seconds / 3600/24)
+    seconds = seconds - days*3600*24
+    hours = int(seconds / 3600)
+    seconds = seconds - hours*3600
+    minutes = int(seconds / 60)
+    seconds = seconds - minutes*60
+    secondsf = int(seconds)
+    seconds = seconds - secondsf
+    millis = int(seconds*1000)
 
-_log_path = None
-
-
-def set_log_path(path):
-    global _log_path
-    _log_path = path
-
-
-def log(obj, filename='log.txt'):
-    print(obj)
-    if _log_path is not None:
-        with open(os.path.join(_log_path, filename), 'a') as f:
-            print(obj, file=f)
-
-
-def ensure_path(path, remove=True):
-    basename = os.path.basename(path.rstrip('/'))
-    if os.path.exists(path):
-        if remove and (basename.startswith('_')
-                or input('{} exists, remove? (y/[n]): '.format(path)) == 'y'):
-            shutil.rmtree(path)
-            os.makedirs(path)
-    else:
-        os.makedirs(path)
-
-
-def set_save_path(save_path, remove=True):
-    ensure_path(save_path, remove=remove)
-    set_log_path(save_path)
-    writer = SummaryWriter(os.path.join(save_path, 'tensorboard'))
-    return log, writer
-
-
-def compute_num_params(model, text=False):
-    tot = int(sum([np.prod(p.shape) for p in model.parameters()]))
-    if text:
-        if tot >= 1e6:
-            return '{:.1f}M'.format(tot / 1e6)
-        else:
-            return '{:.1f}K'.format(tot / 1e3)
-    else:
-        return tot
-
-
-def make_optimizer(param_list, optimizer_spec, load_sd=False):
-    Optimizer = {
-        'sgd': SGD,
-        'adam': Adam
-    }[optimizer_spec['name']]
-    optimizer = Optimizer(param_list, **optimizer_spec['args'])
-    if load_sd:
-        optimizer.load_state_dict(optimizer_spec['sd'])
-    return optimizer
-
-
-def make_coord(shape, ranges=None, flatten=True):
-    """ Make coordinates at grid centers.
-    """
-    coord_seqs = []
-    for i, n in enumerate(shape):
-        if ranges is None:
-            v0, v1 = -1, 1
-        else:
-            v0, v1 = ranges[i]
-        r = (v1 - v0) / (2 * n)
-        seq = v0 + r + (2 * r) * torch.arange(n).float()
-        coord_seqs.append(seq)
-    ret = torch.stack(torch.meshgrid(*coord_seqs), dim=-1)
-    if flatten:
-        ret = ret.view(-1, ret.shape[-1])
-    return ret
-
-
-def to_pixel_samples(img):
-    """ Convert the image to coord-RGB pairs.
-        img: Tensor, (3, H, W)
-    """
-    coord = make_coord(img.shape[-2:])
-    rgb = img.view(3, -1).permute(1, 0)
-    return coord, rgb
-
-
-def calc_psnr(sr, hr, dataset=None, scale=1, rgb_range=1):
-    diff = (sr - hr) / rgb_range
-    if dataset is not None:
-        if dataset == 'benchmark':
-            shave = scale
-            if diff.size(1) > 1:
-                gray_coeffs = [65.738, 129.057, 25.064]
-                convert = diff.new_tensor(gray_coeffs).view(1, 3, 1, 1) / 256
-                diff = diff.mul(convert).sum(dim=1)
-        elif dataset == 'div2k':
-            shave = scale + 6
-        else:
-            raise NotImplementedError
-        valid = diff[..., shave:-shave, shave:-shave]
-    else:
-        valid = diff
-    mse = valid.pow(2).mean()
-    return -10 * torch.log10(mse)
+    f = ''
+    i = 1
+    if days > 0:
+        f += str(days) + 'D'
+        i += 1
+    if hours > 0 and i <= 2:
+        f += str(hours) + 'h'
+        i += 1
+    if minutes > 0 and i <= 2:
+        f += str(minutes) + 'm'
+        i += 1
+    if secondsf > 0 and i <= 2:
+        f += str(secondsf) + 's'
+        i += 1
+    if millis > 0 and i <= 2:
+        f += str(millis) + 'ms'
+        i += 1
+    if f == '':
+        f = '0ms'
+    return f
